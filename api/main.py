@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.inference import BreastHistoModel
 from PIL import Image
 import io, os, torch
+import uvicorn
 
 MODEL_PATH = os.getenv("MODEL_PATH", "models/resnet50_bh_e1_ts_probs.pt")
 CLASS_NAMES = ["benign", "malignant"]
@@ -79,3 +80,7 @@ async def predict_batch(files: list[UploadFile] = File(...),
         "predicted_index": final_idx,
         "predicted_label": CLASS_NAMES[final_idx]
     }
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)

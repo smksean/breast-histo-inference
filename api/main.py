@@ -9,12 +9,16 @@ CLASS_NAMES = ["benign", "malignant"]
 
 app = FastAPI(title="Breast Histo API", version="1.0")
 
-# relax for dev; later set this to your Vercel/Netlify URL(s)
+# Production CORS settings
+allowed_origins = os.getenv("CORS_ALLOW_ORIGINS", "*").split(",")
+if "*" in allowed_origins:
+    allowed_origins = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.getenv("CORS_ALLOW_ORIGINS", "*").split(","),
+    allow_origins=allowed_origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
 

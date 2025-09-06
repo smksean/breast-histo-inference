@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: breast-histo-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: MODEL_PATH
+        value: models/resnet50_bh_e1_ts_probs.pt
+      - key: CORS_ALLOW_ORIGINS
+        value: "*"
+    healthCheckPath: /health

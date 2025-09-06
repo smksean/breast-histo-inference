@@ -14,17 +14,18 @@ RUN apt-get update && apt-get install -y \
 # Upgrade pip and install wheel
 RUN pip install --upgrade pip setuptools wheel
 
-# Install dependencies directly without requirements.txt to avoid conflicts
+# Install PyTorch with CPU support
 RUN pip install --no-cache-dir \
     torch==2.2.2 \
     torchvision==0.17.2 \
     torchaudio==2.2.2 \
     --index-url https://download.pytorch.org/whl/cpu
 
+# Install other dependencies with NumPy compatibility
 RUN pip install --no-cache-dir \
+    "numpy>=1.21.0,<2.0.0" \
     Pillow \
     tqdm \
-    streamlit \
     "fastapi==0.112.2" \
     "uvicorn[standard]==0.30.6" \
     "python-multipart==0.0.9" \
